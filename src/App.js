@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import Component from './components/components';
+import { useSelector } from 'react-redux';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const theme = useSelector(state => state.theme.theme);
+
+	return (
+		<ThemeProvider theme={theme}>
+			<CssBaseline>
+				<Component />
+			</CssBaseline>
+		</ThemeProvider>
+	);
 }
 
 export default App;
