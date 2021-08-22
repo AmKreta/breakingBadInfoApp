@@ -16,7 +16,7 @@ const Quotes = (quotes) => {
     const classes = useStyles();
 
     return (
-        <Grid container className="profile" className={clsx(classes.container)}>
+        <Grid container className={clsx(classes.container)}>
            quotes
         </Grid>
     );

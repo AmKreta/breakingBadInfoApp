@@ -34,7 +34,7 @@ const Profile = ({ match }) => {
     }, [setQuotes, charInfo?.name]);
 
     return (
-        <Grid container className="profile" className={clsx(classes.container)}>
+        <Grid container className={clsx(classes.container)}>
             {
                 charInfo
                     ? (
