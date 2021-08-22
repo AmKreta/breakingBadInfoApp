@@ -14,7 +14,15 @@ const useStyles = makeStyles(theme => ({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.palette.background.default,
+    },
+    backdrop: {
+        zIndex: 3,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        width: '100%'
     }
 }));
 
@@ -22,13 +30,13 @@ const Profile = ({ match }) => {
 
     const classes = useStyles();
     const charInfo = useSelector(state => state.characterList.list.find(item => item?.name === match.params.name));
-    const [quotes, setQuotes] = useState([]);
+    const [quotes, setQuotes] = useState({ loading: 'starting', quotes: [] });
 
     useEffect(() => {
         (async function () {
             if (charInfo?.name) {
                 let res = await getAllQuotesByAuthor(charInfo.name);
-                setQuotes(res.data);
+                setQuotes({ loading: 'finished', quotes: res.data });
             }
         })()
     }, [setQuotes, charInfo?.name]);
@@ -36,15 +44,15 @@ const Profile = ({ match }) => {
     return (
         <Grid container className={clsx(classes.container)}>
             {
-                charInfo
+                charInfo && quotes.loading === 'finished'
                     ? (
                         <>
                             <Info {...charInfo} />
-                            <Quotes quotes={quotes} />
+                            <Quotes quotes={quotes.quotes} />
                         </>
                     )
                     : (
-                        <Backdrop>
+                        <Backdrop open={true} className={clsx(classes.backdrop)}>
                             <CircularProgress />
                         </Backdrop>
                     )
