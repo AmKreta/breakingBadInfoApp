@@ -10,10 +10,22 @@ export const requestAllCharacters = async () => {
     return axios(config);
 }
 
-export const requestCharactersByCategory = (currentPage) => {
+export const requestCharactersByCategory = (query) => {
     let config = {
-        url: '',
-        params: ''
+        url: `${baseUrl}/characters`,
+        params: {
+            category: query
+        }
+    };
+    return axios(config);
+};
+
+export const requestCharactersByName = (query) => {
+    let config = {
+        url: `${baseUrl}/characters`,
+        params: {
+            name: query
+        }
     };
     return axios(config);
 }

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Grid, Typography, IconButton } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2)
     },
     header: {
-        height: '300px',
+        minHeight: '300px',
         backgroundColor: theme.palette.text.primary,
         color: theme.palette.background.default,
         borderRadius: '10px',
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-evenly',
     },
     img: {
-        maxHeight: '100%'
+        height: '300px'
     },
     flexContainer: {
         width: '100%',
@@ -52,6 +52,13 @@ const useStyles = makeStyles(theme => ({
         '&>button': {
             marginRight: theme.spacing(1)
         }
+    },
+    wrapContainer: {
+        flexWrap: 'wrap',
+        '&>img': {
+            width: '100%',
+            objectFit: 'cover'
+        }
     }
 }));
 
@@ -60,6 +67,8 @@ const Profile = ({ name, birthday, occupation, img, status, nickname, portrayed,
     const classes = useStyles();
 
     const history = useHistory();
+
+    const matches = useMediaQuery(theme => theme.breakpoints.up('sm'));
 
     const goBack = useCallback(() => {
         history.goBack();
@@ -73,7 +82,7 @@ const Profile = ({ name, birthday, occupation, img, status, nickname, portrayed,
                 </IconButton>
                 <Typography variant='h4'>{portrayed}</Typography>
             </Grid>
-            <Grid item xs={12} className={clsx(classes.header)}>
+            <Grid item xs={12} className={clsx(classes.header, !matches && classes.wrapContainer)}>
                 <img src={img} alt={name} className={clsx(classes.img)} />
                 <div className={clsx(classes.flexContainerDiv)}>
                     {
@@ -85,10 +94,10 @@ const Profile = ({ name, birthday, occupation, img, status, nickname, portrayed,
                             ['Status', status],
                         ].map((item, index) => (
                             <div key={index} className={clsx(classes.flexContainer)}>
-                                <Typography variant='h6' style={{ opacity: '.8' }}>
+                                <Typography variant='body1' style={{ opacity: '.8' }}>
                                     {item[0]}
                                 </Typography>
-                                <Typography variant='h6'>
+                                <Typography variant='body1'>
                                     {item[1]}
                                 </Typography>
                             </div>
@@ -97,7 +106,7 @@ const Profile = ({ name, birthday, occupation, img, status, nickname, portrayed,
                 </div>
             </Grid>
             <Grid>
-                <Typography variant='h5'>
+                <Typography variant='h6'>
                     <span style={{ opacity: '.8' }}>Featured in seasons -</span>  {appearance.join(',  ')}
                 </Typography>
 

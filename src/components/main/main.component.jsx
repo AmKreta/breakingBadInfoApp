@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { Backdrop, Grid } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import clsx from 'clsx';
-import CharacterCard from './characterCard/characterCard.component';
+import CharacterCard from '../../reusableComponents/characterCard/characterCard.component';
 import { makeStyles } from '@material-ui/core/styles';
+import { pagination } from '../../utils/utils';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -21,15 +22,14 @@ const Main = () => {
     const [itemsToDisplay, setItemsToDisplay] = useState([]);
 
     useEffect(() => {
-        characterList.list?.length && setItemsToDisplay(() => {
-            document.querySelector('#root>*:nth-Child(1)').scroll({
-                top: 0,
-                behavior: 'smooth'
-            })
-            return characterList.list.filter((item, index) => {
-                return (index >= (currentPage - 1) * 10 && index < ((currentPage - 1) * 10) + 10)
-            })
-        });
+        characterList.list?.length && setItemsToDisplay(() => pagination({
+            characterArray: characterList.list,
+            currentPage: currentPage
+        }));
+        document.querySelector('#root>*:nth-Child(1)').scroll({
+            top: 0,
+            behavior: 'smooth'
+        })
     }, [setItemsToDisplay, characterList, currentPage]);
 
     return (

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { Grid, Typography, IconButton, Button } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -37,6 +37,10 @@ const Pagination = () => {
 
     const dispatch = useDispatch();
     const currentPage = useSelector(state => state.pagination.currentPage);
+    const maxPage = useSelector(state => {
+        const length = state.characterList.list.length;
+        return length === 0 ? 1 : Math.ceil(length / 10);
+    });
 
     const [page, setPage] = useState(currentPage);
 
@@ -50,16 +54,21 @@ const Pagination = () => {
     }, [setPage]);
 
     const nextHandler = useCallback(() => {
-        dispatch(goToNextPage());
-    }, [dispatch]);
+        (currentPage < maxPage) && dispatch(goToNextPage());
+    }, [dispatch, currentPage, maxPage]);
 
     const prevHandler = useCallback(() => {
-        dispatch(goToPrevPage());
-    }, [dispatch]);
+        (currentPage > 1) && dispatch(goToPrevPage());
+    }, [dispatch, currentPage]);
 
     const jumpHandler = useCallback((e) => {
-        dispatch(jumpToPage(page));
-    }, [dispatch, page]);
+        if (page >= 1 && page <= maxPage) {
+            dispatch(jumpToPage(page));
+        }
+        else {
+            alert(`page should be in limit [1, ${maxPage}]`);
+        }
+    }, [dispatch, page, maxPage]);
 
     return (
         <Grid container item xs={12} className={clsx(classes.container)} justifyContent='center'>
@@ -78,14 +87,14 @@ const Pagination = () => {
                     className={clsx(classes.input)}
                     onChange={changeHandler}
                     min={1}
-                    max={7}
+                    max={maxPage}
                 />
                 <Button onClick={jumpHandler}>
                     Go
                 </Button>
             </Grid>
             <Grid item xs={2} sm={3} md={3} lg={2} className={clsx(classes.flex)}>
-                <IconButton title='next page' onClick={nextHandler} disabled={currentPage === 7}>
+                <IconButton title='next page' onClick={nextHandler} disabled={currentPage === maxPage}>
                     <ArrowForwardIosIcon />
                 </IconButton>
             </Grid>

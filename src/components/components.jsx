@@ -10,8 +10,6 @@ import Main from './main/main.component';
 import Pagination from './pagination/pagination.component';
 import Profile from './profile/profile.component';
 
-import { setCharacterList } from '../action/action';
-
 const useStyles = makeStyles(theme => ({
     container: {
         height: '100%',
@@ -23,16 +21,6 @@ const useStyles = makeStyles(theme => ({
 const Component = () => {
 
     const classes = useStyles();
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(setCharacterList());
-    }, [dispatch]);
-
-    useEffect(() => {
-
-    }, []);
 
     return (
         <Grid container className={clsx(classes.container)}>

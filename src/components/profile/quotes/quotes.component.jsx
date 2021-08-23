@@ -22,10 +22,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        transform: 'skewX(20deg)',
         transition: '.5s ease-in-out',
         '&:hover': {
-            transform: 'skewX(0deg)',
             cursor: 'pointer'
         }
     },
